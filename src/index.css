@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --font-hanken: "Hanken Grotesk", sans-serif;
+}
+
+* {
+  font-family: "Hanken Grotesk", sans-serif;
+}
+
+body {
+  background-color: #282726;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
