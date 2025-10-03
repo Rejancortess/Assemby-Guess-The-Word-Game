@@ -14,7 +14,9 @@ function App() {
   const letters = alphabet.toUpperCase().split('');
 
   const wrongGuestCount = guessLetters.filter(letter => !words.includes(letter)).length;
-  console.log(wrongGuestCount);
+  const isGameWon = words.every(letter => guessLetters.includes(letter));
+  const isGameLost = wrongGuestCount >= languages.length;
+  const isGameOver = isGameWon || isGameLost;
 
   const handleClick = letter =>
     setGuestLetters(prevLetter => (prevLetter.includes(letter) ? prevLetter : [...prevLetter, letter]));
@@ -64,13 +66,15 @@ function App() {
   return (
     <>
       <Header />
-      <NoticeOne />
+      {isGameOver ? isGameWon ? <NoticeTwo /> : <NoticeGameOver /> : <div className="h-25 w-screen"></div>}
       <section className="mt-10 flex w-100 flex-wrap items-center justify-center gap-2">{listOfLanguages}</section>
       <section className="mt-10 flex gap-1.5">{guessWord}</section>
       <section className="mt-15 flex w-200 flex-wrap justify-center gap-2">{keyBoard}</section>
-      <button className="mt-10 rounded-lg border-1 border-white bg-[#11B5E5] px-20 py-5 text-3xl font-semibold active:scale-95">
-        New Game
-      </button>
+      {isGameOver && (
+        <button className="mt-10 rounded-lg border-1 border-white bg-[#11B5E5] px-20 py-5 text-3xl font-semibold active:scale-95">
+          New Game
+        </button>
+      )}
     </>
   );
 }
