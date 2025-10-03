@@ -1,11 +1,11 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --font-hanken: "Hanken Grotesk", sans-serif;
+  --font-hanken: 'Hanken Grotesk', sans-serif;
 }
 
 * {
-  font-family: "Hanken Grotesk", sans-serif;
+  font-family: 'Hanken Grotesk', sans-serif;
 }
 
 body {
@@ -17,4 +17,19 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.languages::before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  content: '💀 ';
+  top: 0;
+  left: 0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
 }
