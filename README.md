@@ -1,8 +1,8 @@
 # Assembly Guess The Word Game
 
-A web app game built mainly with JavaScript.
+A web app game built in React and Vite, primarily using JavaScript.
 
-## How to Run Locally
+## How to Run Locally (React & Vite)
 
 1. **Clone the repository:**
    ```bash
@@ -14,10 +14,15 @@ A web app game built mainly with JavaScript.
    cd Assemby-Guess-The-Word-Game
    ```
 
-3. **Open `index.html` in your browser to start the game.**
+3. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-## Languages Used
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
 
-- JavaScript (91%)
-- HTML (4.7%)
-- CSS (4.3%)
+5. **Open your browser and visit** `http://localhost:5173` **to view the app.**
+
