@@ -5,19 +5,21 @@ import NoticeTwo from './components/Notice-two';
 import NoticeGameOver from './components/Notice-three';
 import { languages } from './languages';
 import clsx from 'clsx';
+import { getFarewellText, randomWords } from './utils';
 
 function App() {
-  const [word, setWord] = useState('REACT');
+  const [word, setWord] = useState(() => randomWords());
   const [guessLetters, setGuestLetters] = useState([]);
-  const words = word.split('');
+  let words = word.split('');
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
   const letters = alphabet.toUpperCase().split('');
 
   const wrongGuestCount = guessLetters.filter(letter => !words.includes(letter)).length;
   const isGameWon = words.every(letter => guessLetters.includes(letter));
-  const isGameLost = wrongGuestCount >= languages.length;
+  const isGameLost = wrongGuestCount >= languages.length - 1;
   const isGameOver = isGameWon || isGameLost;
-
+  const lastGuessletter = guessLetters[guessLetters.length - 1];
+  const isLastGuessletterWrong = lastGuessletter && !words.includes(lastGuessletter);
   const handleClick = letter =>
     setGuestLetters(prevLetter => (prevLetter.includes(letter) ? prevLetter : [...prevLetter, letter]));
   const listOfLanguages = languages.map((language, index) => {
@@ -50,9 +52,10 @@ function App() {
     const isWrong = isGuesed && !words.includes(letter);
     return (
       <button
+        disabled={isGameOver}
         onClick={() => handleClick(letter)}
         className={clsx(
-          'h-15 w-15 cursor-pointer rounded-2xl border-2 border-white text-2xl font-bold hover:scale-105 active:scale-95',
+          'h-15 w-15 cursor-pointer rounded-2xl border-2 border-white text-2xl font-bold hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50',
           !isGuesed && 'bg-[#FCBA29]',
           isCorrect && 'bg-[#10A95B]',
           isWrong && 'bg-[#EC5D49]'
@@ -63,15 +66,33 @@ function App() {
       </button>
     );
   });
+
+  const notice = () => {
+    if (isLastGuessletterWrong) {
+      return <NoticeOne lang={getFarewellText(languages[wrongGuestCount - 1].name)} />;
+    } else {
+      return <div className="mt-10 h-25"></div>;
+    }
+  };
+
+  function resetGame() {
+    setGuestLetters(() => []);
+    setWord(() => randomWords());
+    words = '';
+  }
+
   return (
     <>
       <Header />
-      {isGameOver ? isGameWon ? <NoticeTwo /> : <NoticeGameOver /> : <div className="h-25 w-screen"></div>}
+      {isGameOver ? isGameWon ? <NoticeTwo /> : <NoticeGameOver /> : notice()}
       <section className="mt-10 flex w-100 flex-wrap items-center justify-center gap-2">{listOfLanguages}</section>
       <section className="mt-10 flex gap-1.5">{guessWord}</section>
       <section className="mt-15 flex w-200 flex-wrap justify-center gap-2">{keyBoard}</section>
       {isGameOver && (
-        <button className="mt-10 rounded-lg border-1 border-white bg-[#11B5E5] px-20 py-5 text-3xl font-semibold active:scale-95">
+        <button
+          onClick={() => resetGame()}
+          className="mt-10 rounded-lg border-1 border-white bg-[#11B5E5] px-20 py-5 text-3xl font-semibold active:scale-95"
+        >
           New Game
         </button>
       )}
