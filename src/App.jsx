@@ -3,9 +3,11 @@ import Header from './components/Header';
 import NoticeOne from './components/Notice-one';
 import NoticeTwo from './components/Notice-two';
 import NoticeGameOver from './components/Notice-three';
+import CryingRain from './components/CryingRain';
 import { languages } from './languages';
 import clsx from 'clsx';
 import { getFarewellText, randomWords } from './utils';
+import Confetti from 'react-confetti';
 
 function App() {
   const [word, setWord] = useState(() => randomWords());
@@ -37,14 +39,21 @@ function App() {
       </span>
     );
   });
-  const guessWord = words.map((letter, index) => (
-    <div
-      key={index}
-      className="flex h-20 w-20 items-center justify-center border-b-2 border-white bg-[#323232] text-4xl font-bold text-white"
-    >
-      {guessLetters.includes(letter) ? letter : ''}
-    </div>
-  ));
+  const guessWord = words.map((letter, index) => {
+    console.log(letter);
+    return (
+      <div
+        key={index}
+        className={clsx(
+          'flex h-20 w-20 items-center justify-center border-b-2 border-white bg-[#323232] text-4xl font-bold text-white'
+        )}
+      >
+        <span className={clsx(!guessLetters.includes(letter) && isGameLost && 'text-red-400')}>
+          {guessLetters.includes(letter) ? letter : isGameOver && letter}
+        </span>
+      </div>
+    );
+  });
 
   const keyBoard = letters.map((letter, index) => {
     const isGuesed = guessLetters.includes(letter);
@@ -78,11 +87,11 @@ function App() {
   function resetGame() {
     setGuestLetters(() => []);
     setWord(() => randomWords());
-    words = '';
   }
-
   return (
     <>
+      {isGameLost && <CryingRain initialVelocityY={4} gravity={0.3} width={1620} />}
+      {isGameWon && <Confetti />}
       <Header />
       {isGameOver ? isGameWon ? <NoticeTwo /> : <NoticeGameOver /> : notice()}
       <section className="mt-10 flex w-100 flex-wrap items-center justify-center gap-2">{listOfLanguages}</section>
