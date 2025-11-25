@@ -35,5 +35,3 @@ A web app game built in React, Vite, and Tailwind CSS, primarily using JavaScrip
 - JavaScript (91%)
 - HTML (4.7%)
 - CSS (4.3%)
-
-rejan
